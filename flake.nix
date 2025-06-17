@@ -64,6 +64,7 @@
             pdc_tool
             pebble-qemu
             pebble-tool
+            pebble-toolchain-bin
             pypkjs
             pyv8
             ;
@@ -96,6 +97,7 @@
         pdc_tool = final.callPackage ./derivations/pdc_tool.nix { };
         pebble-qemu = final.callPackage ./derivations/pebble-qemu.nix { };
         pebble-tool = final.callPackage ./derivations/pebble-tool { };
+        pebble-toolchain-bin = final.callPackage ./derivations/pebble-toolchain-bin.nix { };
         pypkjs = final.pebble-tool.passthru.pythonLibs.pypkjs;
         pyv8 = final.callPackage ./derivations/pyv8 { };
       };
