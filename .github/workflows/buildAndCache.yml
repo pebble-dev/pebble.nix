@@ -28,6 +28,9 @@ jobs:
     - name: Build pebble-qemu
       run: nix build -L .#pebble-qemu
 
+    - name: Build pebble-toolchain-bin
+      run: nix build -L .#pebble-toolchain-bin
+
     - name: Build arm-embedded-toolchain
       if: ${{ matrix.os != 'macos-latest' }}
       run: nix build -L .#arm-embedded-toolchain
