@@ -35,20 +35,9 @@
           inherit system config;
           overlays = [ self.overlays.default ];
         };
-        pebbleCrossPkgs = import nixpkgs {
-          inherit system config;
-          overlays = [ self.overlays.default ];
-          crossSystem = {
-            config = "arm-none-eabi";
-            libc = "newlib-nano";
-          };
-        };
       in
       rec {
-        pebbleEnv = import ./buildTools/pebbleEnv.nix {
-          inherit pebbleCrossPkgs pkgs system;
-          pebble = self.packages.${system};
-        };
+        pebbleEnv = pkgs.callPackage ./buildTools/pebbleEnv.nix { };
 
         buildPebbleApp = import ./buildTools/buildPebbleApp.nix {
           inherit pkgs nixpkgs system;
