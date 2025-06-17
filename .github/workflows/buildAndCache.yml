@@ -36,4 +36,4 @@ jobs:
       run: nix build -L .#arm-embedded-toolchain
 
     - name: Build pebbleEnv
-      run: nix-shell -A pebbleEnv --run "echo OK"
+      run: nix shell -f default.nix pebbleEnv --command sh -c "echo OK"
