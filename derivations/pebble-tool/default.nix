@@ -26,7 +26,6 @@ let
 
   rpath = lib.makeLibraryPath [
     freetype
-    stdenv.cc.cc.lib
     zlib
   ];
 in
