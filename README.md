@@ -97,6 +97,12 @@ inputs (such as pebble.nix) update out of nowhere and potentially break your set
 `package-lock.json`. If you do want to update, you can use `nix flake update` to get the latest versions of your flake's
 inputs. If you make a Git repo in your project, don't forget to commit the `flake.lock` file!
 
+**Important Apple Silicon note:** You might run into an error like the following when trying to build a Pebble app:
+```
+Could not determine the compiler version ['arm-none-eabi-gcc', '-dM', '-E', '-']
+```
+If you do, running `softwareupdate --install-rosetta` should fix it. The C compiler toolchain pebble.nix includes for macOS is the original one Pebble shipped and built for Intel Macs, so you'll need to have Rosetta installed to be able to use it.
+
 ### Step 5: Setup nix-direnv (optional, but recommended)
 
 Having to run `nix develop` every time you want to use the Pebble tools is a bit annoying. In the Nix ecosystem, there's
