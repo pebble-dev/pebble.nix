@@ -150,6 +150,7 @@ Development shells can be configured by specifying the following arguments to `p
 - `cloudPebble`: Whether to connect via a CloudPebble connection. Requires logging into Rebble via `pebble login`.
 - `packages`: Any extra tools to use during development.
 - `CFLAGS`: Extra flags to pass to the compiler during app builds.
+- `withCoreDevices`: Whether to use Core Devices' new pebble-tool, updated to work with Python 3. Defaults to `false`.
 
 ### App Store Builds
 
