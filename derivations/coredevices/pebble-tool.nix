@@ -55,6 +55,12 @@ python3Packages.buildPythonPackage {
     hash = "sha256-Ouhx7oam/uDdShZAPJjkMGm7SlCDSglWqDYzJ584aPY=";
   };
 
+  patches = [
+    # We have our own versions of the compiler toolchain and pebble-qemu, and we want to use those. SDK 4.4 ships
+    # precompiled versions of these, which won't work on NixOS.
+    ./no-sdk-binaries.patch
+  ];
+
   nativeBuildInputs = [ makeWrapper ];
 
   buildInputs = [ nodejs ];

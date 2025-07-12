@@ -1,0 +1,25 @@
+diff --git a/pebble_tool/__init__.py b/pebble_tool/__init__.py
+index d0c99e0..95d0f4e 100644
+--- a/pebble_tool/__init__.py
++++ b/pebble_tool/__init__.py
+@@ -38,8 +38,6 @@ def run_tool(args=None):
+     version_string = "Pebble Tool v{}".format(__version__)
+     if sdk_version() is not None:
+         version_string += " (active SDK: v{})".format(sdk_version())
+-        # Add QEMU and others to PATH
+-        os.environ['PATH'] = "{}:{}".format(os.path.join(get_persist_dir(), "SDKs", sdk_version(), "toolchain", "bin"), os.environ['PATH'])
+     parser.add_argument("--version", action="version", version=version_string)
+     register_children(parser)
+     args = parser.parse_args(args)
+diff --git a/pebble_tool/sdk/__init__.py b/pebble_tool/sdk/__init__.py
+index d29ce5f..f3c74b1 100644
+--- a/pebble_tool/sdk/__init__.py
++++ b/pebble_tool/sdk/__init__.py
+@@ -35,5 +35,4 @@ def get_sdk_persist_dir(platform, for_sdk_version=None):
+     return dir
+ 
+ def add_tools_to_path():
+-    if sdk_version():
+-        os.environ['PATH'] = "{}:{}".format(os.path.join(get_persist_dir(), "SDKs", sdk_version(), "toolchain", "arm-none-eabi", "bin"), os.environ['PATH'])
+\ No newline at end of file
++    return
