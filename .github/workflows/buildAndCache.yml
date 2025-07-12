@@ -25,6 +25,9 @@ jobs:
     - name: Build pebble-tool
       run: nix build -L .#pebble-tool
 
+    - name: Build Core Devices pebble-tool
+      run: nix build -L .#coredevices.pebble-tool
+
     - name: Build pebble-qemu
       run: nix build -L .#pebble-qemu
 
@@ -37,3 +40,6 @@ jobs:
 
     - name: Build pebbleEnv
       run: nix shell -f default.nix pebbleEnv --command sh -c "echo OK"
+
+    - name: Build pebbleEnv with Core Devices pebble-tool
+      run: nix shell -f default.nix pebbleEnv --arg withCoreDevices true --command sh -c "echo OK"
