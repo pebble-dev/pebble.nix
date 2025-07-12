@@ -1,5 +1,6 @@
 {
   mkShell,
+  coredevices,
   nodejs,
   pebble-qemu,
   pebble-tool,
@@ -13,6 +14,7 @@
   nativeBuildInputs ? [ ],
   packages ? [ ],
   CFLAGS ? "",
+  withCoreDevices ? false,
   ...
 }@attrs:
 
@@ -26,6 +28,8 @@ let
     "packages"
     "CFLAGS"
   ];
+
+  pebbleToolPackage = if withCoreDevices then coredevices.pebble-tool else pebble-tool;
 in
 mkShell (
   {
@@ -34,7 +38,7 @@ mkShell (
       [
         nodejs
         pebble-qemu
-        pebble-tool
+        pebbleToolPackage
         pebble-toolchain-bin
       ]
       ++ packages
