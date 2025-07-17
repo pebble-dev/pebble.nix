@@ -44,22 +44,16 @@ let
     ];
   };
 in
-python3Packages.buildPythonPackage {
+python3Packages.buildPythonPackage rec {
   pname = "pebble-tool";
-  version = "5.0.2";
+  version = "5.0.3";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "pebble-tool";
-    rev = "d99857c7a30695d0fd710a25e2bb4689c57b58ef";
-    hash = "sha256-Ouhx7oam/uDdShZAPJjkMGm7SlCDSglWqDYzJ584aPY=";
+    tag = "v${version}";
+    hash = "sha256-QvNsDLq6sTn/befmZwlZ7TcIArHCOj/fXWOrDEdONIM=";
   };
-
-  patches = [
-    # We have our own versions of the compiler toolchain and pebble-qemu, and we want to use those. SDK 4.4 ships
-    # precompiled versions of these, which won't work on NixOS.
-    ./no-sdk-binaries.patch
-  ];
 
   nativeBuildInputs = [ makeWrapper ];
 
