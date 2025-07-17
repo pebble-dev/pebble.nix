@@ -1,5 +1,6 @@
 {
   mkShell,
+  lib,
   coredevices,
   nodejs,
   pebble-qemu,
@@ -49,6 +50,10 @@ mkShell (
       PEBBLE_PHONE = devServerIP;
       PEBBLE_EMULATOR = emulatorTarget;
       PEBBLE_CLOUDPEBBLE = if cloudPebble then "1" else "";
+      PEBBLE_EXTRA_PATH = lib.makeBinPath [
+        pebble-qemu
+        pebble-toolchain-bin
+      ];
     };
   }
   // rest
