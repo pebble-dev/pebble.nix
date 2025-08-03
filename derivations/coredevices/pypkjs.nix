@@ -60,15 +60,15 @@ let
     };
   };
 in
-python3Packages.buildPythonPackage {
+python3Packages.buildPythonPackage rec {
   pname = "pypkjs";
-  version = "2.0.3";
+  version = "2.0.6";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "pypkjs";
-    rev = "9561f7ba3be73e2546b1cfdf6dcfbb416a7f64ca";
-    hash = "sha256-/ZRwKXzQ5tHrViyfrEsI/sOQepCND7/Fr6AEHMUhuws=";
+    tag = "v${version}";
+    hash = "sha256-0A5jDO+9l3tWQBaNU7hk6PYKNyIiGwF7Ik7jMjS06kA=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
