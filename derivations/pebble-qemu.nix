@@ -29,15 +29,15 @@ let
     ]
   );
 in
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "pebble-qemu";
   version = "2.5.0-pebble6";
 
   src = fetchFromGitHub {
     owner = "pebble-dev";
     repo = "qemu";
-    rev = "v${version}";
-    hash = "sha256-JYd0xRSE4IiDOTkmlPEo4drQf5+FpAmGIE2Ba9pJrhE=";
+    rev = "615110afaf9fd48435263a340e0ceccfe2d52997";
+    hash = "sha256-tblgseY4g/5Hyor3dvGILGw5ECgtfDoyjkRcQrTVr24=";
     fetchSubmodules = true;
   };
 
