@@ -17,12 +17,14 @@ stdenv.mkDerivation (finalAttrs: {
   src =
     (rec {
       x86_64-linux = fetchzip {
-        url = "https://developer.rebble.io/s3.amazonaws.com/assets.getpebble.com/pebble-tool/pebble-sdk-${finalAttrs.version}-linux64.tar.bz2";
-        hash = "sha256-LLZX3S/OaxE2wlk/lL1+HfSenwgDWGE7EG2kbiff44Y=";
+        url = "https://sdk.core.store/releases/${finalAttrs.version}/toolchain-linux.tar.gz";
+        hash = "sha256-RDMrFzwjJpWGmB2LrXJIZugf5PzJ4KI9N32A5e1n4es=";
+        stripRoot = false;
       };
       x86_64-darwin = fetchzip {
-        url = "https://developer.rebble.io/s3.amazonaws.com/assets.getpebble.com/pebble-tool/pebble-sdk-${finalAttrs.version}-mac.tar.bz2";
-        hash = "sha256-DgT75r0pxxyL1csxEvyDC4KO+Yv8sSfA5LSVXCVefZ0=";
+        url = "https://sdk.core.store/releases/${finalAttrs.version}/toolchain-mac.tar.gz";
+        hash = "sha256-X49vcPSYt7fox5HBUhTwaob8y50mS7lgSfeqEW5imjY=";
+        stripRoot = false;
       };
       aarch64-darwin = x86_64-darwin;
     }).${stdenv.hostPlatform.system};
@@ -38,7 +40,7 @@ stdenv.mkDerivation (finalAttrs: {
     ]);
 
   installPhase = ''
-    mv arm-cs-tools $out
+    mv toolchain-*/arm-none-eabi $out
   '';
 
   fixupPhase = lib.optionalString stdenv.hostPlatform.isDarwin ''
