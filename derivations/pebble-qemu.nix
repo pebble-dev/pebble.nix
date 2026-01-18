@@ -9,6 +9,7 @@
   flex,
   glib,
   libtool,
+  libx11,
   perl,
   pixman,
   pkg-config,
@@ -54,10 +55,12 @@ stdenv.mkDerivation {
 
   buildInputs = [
     glib
+    libx11
     pixman
     SDL2
     zlib
-  ] ++ darwinDeps;
+  ]
+  ++ darwinDeps;
 
   configureFlags = [
     "--with-coroutine=gthread"
