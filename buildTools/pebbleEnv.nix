@@ -15,7 +15,7 @@
   nativeBuildInputs ? [ ],
   packages ? [ ],
   CFLAGS ? "",
-  withCoreDevices ? false,
+  withCoreDevices ? true,
   ...
 }@attrs:
 
@@ -35,15 +35,14 @@ in
 mkShell (
   {
     name = "pebble-env";
-    packages =
-      [
-        nodejs
-        pebble-qemu
-        pebbleToolPackage
-        pebble-toolchain-bin
-      ]
-      ++ packages
-      ++ nativeBuildInputs;
+    packages = [
+      nodejs
+      pebble-qemu
+      pebbleToolPackage
+      pebble-toolchain-bin
+    ]
+    ++ packages
+    ++ nativeBuildInputs;
 
     env = {
       inherit CFLAGS;
