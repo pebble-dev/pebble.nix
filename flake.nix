@@ -27,8 +27,8 @@
       let
         config = {
           permittedInsecurePackages = [
-            "python-2.7.18.8"
-            "python-2.7.18.8-env"
+            "python-2.7.18.12"
+            "python-2.7.18.12-env"
           ];
         };
         pkgs = import nixpkgs {
@@ -64,7 +64,7 @@
           name = "pebble.nix-devshell";
           packages = with pkgs; [
             nil
-            nixfmt-rfc-style
+            nixfmt
           ];
 
           inherit (self.checks.${system}.pre-commit) shellHook;
@@ -73,7 +73,7 @@
         checks.pre-commit = commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
-            nixfmt-rfc-style.enable = true;
+            nixfmt.enable = true;
             nil.enable = true;
           };
         };
