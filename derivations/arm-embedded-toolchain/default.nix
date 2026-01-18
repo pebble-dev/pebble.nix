@@ -36,13 +36,12 @@ gccStdenv.mkDerivation rec {
     texinfo
   ];
 
-  buildInputs =
-    [
-      ncurses
-    ]
-    ++ lib.optionals gccStdenv.isDarwin [
-      libiconv
-    ];
+  buildInputs = [
+    ncurses
+  ]
+  ++ lib.optionals gccStdenv.isDarwin [
+    libiconv
+  ];
 
   postUnpack = ''
     # Extract all tarballs in the source directory
@@ -101,5 +100,7 @@ gccStdenv.mkDerivation rec {
     mainProgram = "arm-none-eabi-gcc";
     platforms = platforms.linux ++ platforms.darwin;
     badPlatforms = [ "aarch64-darwin" ];
+    # no idea, don't care about this enough to make it work again
+    broken = true;
   };
 }

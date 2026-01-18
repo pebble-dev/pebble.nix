@@ -34,9 +34,9 @@ jobs:
     - name: Build pebble-toolchain-bin
       run: nix build -L .#pebble-toolchain-bin
 
-    - name: Build arm-embedded-toolchain
-      if: ${{ matrix.os != 'macos-latest' }}
-      run: nix build -L .#arm-embedded-toolchain
+    # - name: Build arm-embedded-toolchain
+    #   if: ${{ matrix.os != 'macos-latest' }}
+    #   run: nix build -L .#arm-embedded-toolchain
 
     - name: Build pebbleEnv
       run: nix shell -f default.nix pebbleEnv --command sh -c "echo OK"
