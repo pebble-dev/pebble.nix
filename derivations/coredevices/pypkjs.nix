@@ -32,9 +32,9 @@ let
           }).${stdenv.hostPlatform.system};
         hash =
           ({
-            x86_64-linux = "sha256-wkqkIVxk231n/GxCwNdzHKvPMAWWv5yCaudPQm/jt3E=";
-            x86_64-darwin = "sha256-/CuVa/ryNTHEkIRe232A/JmP6K7hx88TNzF9rgEWkwc=";
-            aarch64-darwin = "sha256-bcQLZWzqf+VB9r262DtrTtUeXq2YW1TBOTGacxJTpV4=";
+            x86_64-linux = "sha256-g0uXYbt/SdqLiHhHx2R0laLPbEX2niEkrg4/AkSTvBU=";
+            x86_64-darwin = "sha256-tT32EUqIaY7m84IM9GR26D7gnJpn3Z989YymopKCOLA=";
+            aarch64-darwin = "sha256-bLXodRruJIfMO18h6sbUWQQacYCneZQbZNtXNuJydu4=";
           }).${stdenv.hostPlatform.system};
       };
 
@@ -43,9 +43,31 @@ let
     nativeBuildInputs = [
       python3Packages.pypaInstallHook
       python3Packages.wheelUnpackHook
-    ] ++ (lib.optional stdenv.hostPlatform.isLinux autoPatchelfHook);
+    ]
+    ++ (lib.optional stdenv.hostPlatform.isLinux autoPatchelfHook);
 
     buildInputs = [ zlib ];
+  };
+
+  # TODO: make separate derivation
+  libpebble2 = python3Packages.buildPythonPackage rec {
+    pname = "libpebble2";
+    version = "0.0.30";
+    src = fetchFromGitHub {
+      owner = "pebble-dev";
+      repo = "libpebble2";
+      tag = "v${version}";
+      hash = "sha256-jzN3bMp7hCCFP6wQ4woXTgOmehczvn7cLqen9TlG7Dc=";
+    };
+
+    propagatedBuildInputs = with python3Packages; [
+      pyserial
+      six
+      websocket-client
+    ];
+
+    pyproject = true;
+    build-system = [ python3Packages.setuptools ];
   };
 
   pygeoip = python3Packages.buildPythonPackage rec {
@@ -58,6 +80,13 @@ let
       tag = "v${version}";
       hash = "sha256-D058c3o+2rTMQJpgwvFKd5Qwt2j7u4+GFpQHjO7lOVQ=";
     };
+
+    postPatch = ''
+      rm Makefile
+    '';
+
+    pyproject = true;
+    build-system = [ python3Packages.setuptools ];
   };
 in
 python3Packages.buildPythonPackage rec {
@@ -77,17 +106,21 @@ python3Packages.buildPythonPackage rec {
     gevent
     gevent-websocket
     greenlet
+    libpebble2
     netaddr
     peewee
     pygeoip
     pypng
+    python-dateutil
     stpyv8
-    dateutil
     requests
     sh
     six
-    websocket_client
+    websocket-client
   ];
+
+  pyproject = true;
+  build-system = [ python3Packages.setuptools ];
 
   postFixup = ''
     wrapProgram $out/bin/pypkjs \

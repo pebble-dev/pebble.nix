@@ -3,17 +3,38 @@
   fetchFromGitHub,
   makeWrapper,
   coredevices,
-  freetype,
   nodejs,
-  python3Packages,
+  python3,
   zlib,
 }:
 
 let
   rpath = lib.makeLibraryPath [
-    freetype
     zlib
   ];
+
+  python =
+    let
+      packageOverrides = final: prev: {
+        rsa = prev.rsa.overrideAttrs rec {
+          version = "4.9.1";
+          src = fetchFromGitHub {
+            owner = "sybrenstuvel";
+            repo = "python-rsa";
+            rev = "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea";
+            hash = "sha256-iZ+BehQkdZJ1n9mz1SzK8a7NwQGSxbOz48OZ4qrbqOE=";
+          };
+          postPatch = ''
+            substituteInPlace pyproject.toml --replace "4.10-dev0" "${version}"
+          '';
+        };
+      };
+    in
+    (python3.override {
+      inherit packageOverrides;
+      self = python;
+    });
+  python3Packages = python.pkgs;
 
   sourcemap = python3Packages.buildPythonPackage rec {
     pname = "sourcemap";
@@ -25,34 +46,44 @@ let
       tag = version;
       hash = "sha256-xVVBtwYPAsScYitINnKhj3XOgapXzQnXvmuF0B4Kuac=";
     };
+
+    postPatch = ''
+      rm Makefile
+    '';
+
+    pyproject = true;
+    build-system = [ python3Packages.setuptools ];
   };
 
-  libpebble2 = python3Packages.buildPythonPackage {
+  libpebble2 = python3Packages.buildPythonPackage rec {
     pname = "libpebble2";
-    version = "0.0.28";
+    version = "0.0.30";
     src = fetchFromGitHub {
       owner = "pebble-dev";
       repo = "libpebble2";
-      rev = "575fe2cfae39e1a1c61937d4e90628a3d5790a4d";
-      hash = "sha256-bQNeJoiQhg/twMcYpgvBOG/mutm3Fuf9iwF0y5UgWs0=";
+      tag = "v${version}";
+      hash = "sha256-jzN3bMp7hCCFP6wQ4woXTgOmehczvn7cLqen9TlG7Dc=";
     };
 
     propagatedBuildInputs = with python3Packages; [
       pyserial
       six
-      websocket_client
+      websocket-client
     ];
+
+    pyproject = true;
+    build-system = [ python3Packages.setuptools ];
   };
 in
 python3Packages.buildPythonPackage rec {
   pname = "pebble-tool";
-  version = "5.0.5";
+  version = "5.0.21";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "pebble-tool";
     tag = "v${version}";
-    hash = "sha256-z0sZGQoMZLVYUP1ZC40TfuSj0P0QE0i/V1Jy+lM2sA4=";
+    hash = "sha256-hF4G6NUXZtWG8qZ10pMd4QeIvqCjmxFcuH4a3xR1NrQ=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
@@ -60,8 +91,10 @@ python3Packages.buildPythonPackage rec {
   buildInputs = [ nodejs ];
 
   propagatedBuildInputs = with python3Packages; [
+    cobs
     coredevices.pypkjs
     colorama
+    freetype-py
     httplib2
     libpebble2
     oauth2client
@@ -77,10 +110,12 @@ python3Packages.buildPythonPackage rec {
     six
     sourcemap
     websocket-client
+    websockify
     wheel
-
-    freetype
   ];
+
+  pyproject = true;
+  build-system = [ python3Packages.hatchling ];
 
   postFixup = ''
     wrapProgram $out/bin/pebble \
