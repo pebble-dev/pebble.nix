@@ -4,7 +4,7 @@
   makeWrapper,
   coredevices,
   nodejs,
-  python3,
+  python3Packages,
   zlib,
 }:
 
@@ -12,29 +12,6 @@ let
   rpath = lib.makeLibraryPath [
     zlib
   ];
-
-  python =
-    let
-      packageOverrides = final: prev: {
-        rsa = prev.rsa.overrideAttrs rec {
-          version = "4.9.1";
-          src = fetchFromGitHub {
-            owner = "sybrenstuvel";
-            repo = "python-rsa";
-            rev = "42b0e14ffbeeb9d99d1037e6440a2cc61780e4ea";
-            hash = "sha256-iZ+BehQkdZJ1n9mz1SzK8a7NwQGSxbOz48OZ4qrbqOE=";
-          };
-          postPatch = ''
-            substituteInPlace pyproject.toml --replace "4.10-dev0" "${version}"
-          '';
-        };
-      };
-    in
-    (python3.override {
-      inherit packageOverrides;
-      self = python;
-    });
-  python3Packages = python.pkgs;
 
   sourcemap = python3Packages.buildPythonPackage rec {
     pname = "sourcemap";
