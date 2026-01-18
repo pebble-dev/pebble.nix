@@ -6,7 +6,10 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    flake-compat.url = "github:edolstra/flake-compat";
+    flake-compat = {
+      url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
+      flake = false;
+    };
 
     commit-hooks = {
       url = "github:cachix/git-hooks.nix";

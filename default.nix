@@ -1,14 +1,17 @@
 let
   system = builtins.currentSystem;
 
-  flakeLock = builtins.fromJSON (builtins.readFile ./flake.lock);
+  lockFile = builtins.fromJSON (builtins.readFile ./flake.lock);
+  flake-compat-node = lockFile.nodes.${lockFile.nodes.root.inputs.flake-compat};
+  flake-compat = builtins.fetchTarball {
+    inherit (flake-compat-node.locked) url;
+    sha256 = flake-compat-node.locked.narHash;
+  };
+
   flake =
-    (import (fetchTarball {
-      url =
-        flakeLock.nodes.flake-compat.locked.url
-          or "https://github.com/edolstra/flake-compat/archive/${flakeLock.nodes.flake-compat.locked.rev}.tar.gz";
-      sha256 = flakeLock.nodes.flake-compat.locked.narHash;
-    }) { src = ./.; }).defaultNix.outputs;
+    (import flake-compat {
+      src = ./.;
+    }).defaultNix;
 in
 {
   buildPebbleApp = flake.buildPebbleApp.${system};
