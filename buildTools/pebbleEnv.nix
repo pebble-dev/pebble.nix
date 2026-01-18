@@ -1,5 +1,5 @@
 {
-  mkShell,
+  mkShellNoCC,
   lib,
   coredevices,
   nodejs,
@@ -32,7 +32,7 @@ let
 
   pebbleToolPackage = if withCoreDevices then coredevices.pebble-tool else pebble-tool;
 in
-mkShell (
+mkShellNoCC (
   {
     name = "pebble-env";
     packages = [
