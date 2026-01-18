@@ -151,6 +151,7 @@ Development shells can be configured by specifying the following arguments to `p
 - `packages`: Any extra tools to use during development.
 - `CFLAGS`: Extra flags to pass to the compiler during app builds.
 - `withCoreDevices`: Whether to use Core Devices' new pebble-tool, updated to work with Python 3. Defaults to `true`.
+  - **NOTE:** Currently, setting this to `false` is broken, and not supported. The option will likely be removed in a future update to pebble.nix, due to [nixpkgs working on removing support for Python 2](https://github.com/NixOS/nixpkgs/issues/479927).
 
 ### App Store Builds
 
