@@ -47,9 +47,7 @@ python2Packages.buildPythonPackage {
   propagatedBuildInputs =
     builtins.attrValues pythonLibs
     ++ (with python2Packages; [
-      enum34
       httplib2
-      packaging
       pyqrcode
       pyserial
 

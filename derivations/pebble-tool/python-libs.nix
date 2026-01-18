@@ -28,6 +28,18 @@ rec {
     };
   };
 
+  enum34 = buildPythonPackage rec {
+    pname = "enum34";
+    version = "1.1.10";
+
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "";
+    };
+
+    nativeCheckInputs = [ unittestCheckHook ];
+  };
+
   gevent = buildPythonPackage rec {
     pname = "gevent";
     version = "1.1.1";
@@ -125,6 +137,18 @@ rec {
     ];
   };
 
+  packaging = buildPythonPackage rec {
+    pname = "packaging";
+    version = "16.7";
+    src = fetchPypi {
+      inherit pname version;
+      hash = "";
+    };
+
+    pyproject = false;
+    doCheck = false;
+  };
+
   peewee = buildPythonPackage rec {
     pname = "peewee";
     version = "2.4.7";
@@ -206,8 +230,8 @@ rec {
       peewee
       pygeoip
       pypng
+      python-dateutil
       pyv8
-      dateutil
       requests
       sh
       six
@@ -261,6 +285,21 @@ rec {
     };
 
     propagatedBuildInputs = [ pyasn1 ];
+  };
+
+  six = buildPythonPackage rec {
+    pname = "six";
+    version = "1.17.0";
+
+    src = fetchFromGitHub {
+      owner = "benjaminp";
+      repo = "six";
+      tag = version;
+      hash = "sha256-tz99C+dz5xJhunoC45bl0NdSdV9NXWya9ti48Z/KaHY=";
+    };
+
+    pyproject = true;
+    build-system = [ setuptools ];
   };
 
   sh = buildPythonPackage rec {
