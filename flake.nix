@@ -4,8 +4,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    flake-utils.url = "github:numtide/flake-utils";
-
     flake-compat = {
       url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
       flake = false;
@@ -21,34 +19,48 @@
     {
       self,
       commit-hooks,
-      flake-utils,
       nixpkgs,
       ...
     }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" ] (
-      system:
-      let
-        config = {
-          permittedInsecurePackages = [
-            "python-2.7.18.12"
-            "python-2.7.18.12-env"
-          ];
-        };
-        pkgs = import nixpkgs {
-          inherit system config;
-          overlays = [ self.overlays.default ];
-        };
-      in
-      rec {
-        pebbleEnv = pkgs.callPackage ./buildTools/pebbleEnv.nix { };
+    let
+      forEachSystem =
+        fn:
+        nixpkgs.lib.genAttrs
+          [
+            "x86_64-linux"
+            "x86_64-darwin"
+            "aarch64-darwin"
+          ]
+          (
+            system:
+            fn system (
+              import nixpkgs {
+                inherit system;
+                config = {
+                  permittedInsecurePackages = [
+                    "python-2.7.18.12"
+                    "python-2.7.18.12-env"
+                  ];
+                };
+                overlays = [ self.overlays.default ];
+              }
+            )
+          );
+    in
+    rec {
+      pebbleEnv = forEachSystem (_: pkgs: pkgs.callPackage ./buildTools/pebbleEnv.nix { });
 
-        buildPebbleApp = import ./buildTools/buildPebbleApp.nix {
+      buildPebbleApp = forEachSystem (
+        system: pkgs:
+        import ./buildTools/buildPebbleApp.nix {
           inherit pkgs nixpkgs system;
           pebble-tool = packages.pebble-tool;
           python-libs = pkgs.callPackage ./derivations/pebble-tool/python-libs.nix { };
+        }
+      );
 
-        };
-        packages = {
+      packages = forEachSystem (
+        _: pkgs: {
           inherit (pkgs)
             arm-embedded-toolchain
             boost153
@@ -61,9 +73,12 @@
             pypkjs
             pyv8
             ;
-        };
+        }
+      );
 
-        devShell = pkgs.mkShell {
+      devShell = forEachSystem (
+        system: pkgs:
+        pkgs.mkShell {
           name = "pebble.nix-devshell";
           packages = with pkgs; [
             nil
@@ -71,18 +86,21 @@
           ];
 
           inherit (self.checks.${system}.pre-commit) shellHook;
-        };
+        }
+      );
 
-        checks.pre-commit = commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            nixfmt.enable = true;
-            nil.enable = true;
+      checks = forEachSystem (
+        system: _: {
+          pre-commit = commit-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              nixfmt.enable = true;
+              nil.enable = true;
+            };
           };
-        };
-      }
-    )
-    // {
+        }
+      );
+
       overlays.default = final: prev: {
         arm-embedded-toolchain = final.callPackage ./derivations/arm-embedded-toolchain { };
         boost153 = final.callPackage ./derivations/boost153 { };
