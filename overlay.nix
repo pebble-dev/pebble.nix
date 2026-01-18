@@ -2,6 +2,8 @@ final: prev: {
   python3 =
     let
       packageOverrides = final': prev': {
+        libpebble2 = final'.callPackage ./derivations/libpebble2.nix { };
+
         rsa = prev'.rsa.overrideAttrs {
           version = "4.9.1";
           src = final.fetchFromGitHub {
