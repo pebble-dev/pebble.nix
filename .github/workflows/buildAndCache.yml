@@ -22,8 +22,8 @@ jobs:
         name: pebble
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
 
-    - name: Build pebble-tool
-      run: nix build -L .#pebble-tool
+    # - name: Build pebble-tool
+    #   run: nix build -L .#pebble-tool
 
     - name: Build Core Devices pebble-tool
       run: nix build -L .#coredevices.pebble-tool

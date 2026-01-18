@@ -81,5 +81,8 @@ python2Packages.buildPythonPackage {
     license = licenses.mit;
     mainProgram = "pebble";
     platforms = platforms.linux ++ platforms.darwin;
+    # Nixpkgs has neutered it's Python 2 packaging to the point where it's really tricky to make it work for this
+    # anymore.
+    broken = true;
   };
 }
