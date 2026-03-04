@@ -34,13 +34,13 @@ let
 in
 python3Packages.buildPythonPackage rec {
   pname = "pebble-tool";
-  version = "5.0.21";
+  version = "5.0.28";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "pebble-tool";
     tag = "v${version}";
-    hash = "sha256-hF4G6NUXZtWG8qZ10pMd4QeIvqCjmxFcuH4a3xR1NrQ=";
+    hash = "sha256-zmtMmig7re1CB6WaXsFwPYMzB1UmNTx2uqgnpPg9mIg=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
@@ -52,10 +52,13 @@ python3Packages.buildPythonPackage rec {
     coredevices.pypkjs
     colorama
     freetype-py
+    google-auth-oauthlib
+    google-auth
     httplib2
     libpebble2
     oauth2client
     packaging
+    pillow
     progressbar2
     pyasn1
     pyasn1-modules
