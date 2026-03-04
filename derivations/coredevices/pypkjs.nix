@@ -70,13 +70,13 @@ let
 in
 python3Packages.buildPythonPackage rec {
   pname = "pypkjs";
-  version = "2.0.6";
+  version = "2.0.7";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "pypkjs";
     tag = "v${version}";
-    hash = "sha256-0A5jDO+9l3tWQBaNU7hk6PYKNyIiGwF7Ik7jMjS06kA=";
+    hash = "sha256-IL/8ELmEOHiCLOaD1LFk6Pc/W/25AzG83aU4UOr3BOA=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
