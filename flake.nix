@@ -36,12 +36,6 @@
             fn system (
               import nixpkgs {
                 inherit system;
-                config = {
-                  permittedInsecurePackages = [
-                    "python-2.7.18.12"
-                    "python-2.7.18.12-env"
-                  ];
-                };
                 overlays = [ self.overlays.default ];
               }
             )
