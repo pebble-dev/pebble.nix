@@ -1,7 +1,6 @@
 {
   mkShellNoCC,
   lib,
-  coredevices,
   nodejs,
   pebble-qemu,
   pebble-tool,
@@ -15,7 +14,6 @@
   nativeBuildInputs ? [ ],
   packages ? [ ],
   CFLAGS ? "",
-  withCoreDevices ? true,
   ...
 }@attrs:
 
@@ -29,20 +27,23 @@ let
     "packages"
     "CFLAGS"
   ];
-
-  pebbleToolPackage = if withCoreDevices then coredevices.pebble-tool else pebble-tool;
 in
 mkShellNoCC (
   {
     name = "pebble-env";
-    packages = [
-      nodejs
-      pebble-qemu
-      pebbleToolPackage
-      pebble-toolchain-bin
-    ]
-    ++ packages
-    ++ nativeBuildInputs;
+    packages =
+      lib.warnIf (attrs ? withCoreDevices)
+        "Core Devices' pebble-tool is now the only supported version, and withCoreDevices no longer has any effect. It can be safely removed."
+        (
+          [
+            nodejs
+            pebble-qemu
+            pebble-tool
+            pebble-toolchain-bin
+          ]
+          ++ packages
+          ++ nativeBuildInputs
+        );
 
     env = {
       inherit CFLAGS;

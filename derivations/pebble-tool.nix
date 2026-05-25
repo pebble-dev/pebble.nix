@@ -2,9 +2,9 @@
   lib,
   fetchFromGitHub,
   makeWrapper,
-  coredevices,
   nodejs,
   python3Packages,
+  pypkjs,
   zlib,
 }:
 
@@ -49,7 +49,6 @@ python3Packages.buildPythonPackage rec {
 
   propagatedBuildInputs = with python3Packages; [
     cobs
-    coredevices.pypkjs
     colorama
     freetype-py
     google-auth-oauthlib
@@ -62,6 +61,7 @@ python3Packages.buildPythonPackage rec {
     progressbar2
     pyasn1
     pyasn1-modules
+    pypkjs
     pypng
     pyqrcode
     pyserial

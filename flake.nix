@@ -62,9 +62,6 @@
       packages = forEachSystem (
         _: pkgs: {
           inherit (pkgs)
-            arm-embedded-toolchain
-            boost153
-            coredevices
             pdc-sequencer
             pdc_tool
             pebble-qemu
