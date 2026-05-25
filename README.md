@@ -97,12 +97,6 @@ inputs (such as pebble.nix) update out of nowhere and potentially break your set
 `package-lock.json`. If you do want to update, you can use `nix flake update` to get the latest versions of your flake's
 inputs. If you make a Git repo in your project, don't forget to commit the `flake.lock` file!
 
-**Important Apple Silicon note:** You might run into an error like the following when trying to build a Pebble app:
-```
-Could not determine the compiler version ['arm-none-eabi-gcc', '-dM', '-E', '-']
-```
-If you do, running `softwareupdate --install-rosetta` should fix it. The C compiler toolchain pebble.nix includes for macOS is the original one Pebble shipped and built for Intel Macs, so you'll need to have Rosetta installed to be able to use it.
-
 ### Step 5: Setup nix-direnv (optional, but recommended)
 
 Having to run `nix develop` every time you want to use the Pebble tools is a bit annoying. In the Nix ecosystem, there's
@@ -150,8 +144,6 @@ Development shells can be configured by specifying the following arguments to `p
 - `cloudPebble`: Whether to connect via a CloudPebble connection. Requires logging into Rebble via `pebble login`.
 - `packages`: Any extra tools to use during development.
 - `CFLAGS`: Extra flags to pass to the compiler during app builds.
-- `withCoreDevices`: Whether to use Core Devices' new pebble-tool, updated to work with Python 3. Defaults to `true`.
-  - **NOTE:** Currently, setting this to `false` is broken, and not supported. The option will likely be removed in a future update to pebble.nix, due to [nixpkgs working on removing support for Python 2](https://github.com/NixOS/nixpkgs/issues/479927).
 
 ### App Store Builds
 
