@@ -65,6 +65,8 @@ stdenv.mkDerivation (finalAttrs: {
     fetchSubmodules = true;
   };
 
+  patches = [ ./skip-macos-icon.patch ];
+
   postUnpack = ''
     (
       cd $sourceRoot
