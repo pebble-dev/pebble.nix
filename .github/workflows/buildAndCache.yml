@@ -33,3 +33,29 @@ jobs:
 
     - name: Build pebbleEnv
       run: nix shell -f default.nix pebbleEnv --command sh -c "echo OK"
+
+    - name: 'Build reverse dependency: no-time-for-this'
+      run: |
+        REPO=https://github.com/nilp0inter/no-time-for-this
+        REV=45fa8581402955adc2b626a3f6509d8fa5701bb9
+        git clone --depth=1 --revision "$REV" "$REPO" revdeps/no-time-for-this
+        RDEP=path:revdeps/no-time-for-this
+        nix build -L "$RDEP" --override-input pebble "$GITHUB_WORKSPACE"
+
+    - name: 'Build reverse dependency: skunk'
+      run: |
+        REPO=https://github.com/unlobito/skunk
+        REV=dcd7db99a408b5de2d988e6729ce0daaa70f6137
+        git clone --depth=1 --revision "$REV" "$REPO" revdeps/skunk
+        RDEP=revdeps/skunk/default.nix
+        DIR=$GITHUB_WORKSPACE
+        nix build -L --impure --expr "import $RDEP { pebbleDotNixSrc = $DIR; }"
+
+    - name: 'Build reverse dependency: kijete'
+      run: |
+        REPO=https://github.com/yellowsink/kijete
+        REV=4818aaf57add82666496fb56de37574cf88cdc66
+        git clone --depth=1 --revision "$REV" "$REPO" revdeps/kijete
+        RDEP=revdeps/kijete/default.nix
+        DIR=$GITHUB_WORKSPACE
+        nix build -L --impure --expr "import $RDEP { pebbleDotNixSrc = $DIR; }"
