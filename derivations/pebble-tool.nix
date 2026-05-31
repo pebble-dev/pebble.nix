@@ -43,6 +43,15 @@ python3Packages.buildPythonPackage rec {
     hash = "sha256-quBDT7Sh14v7N47H1EVsvELT3Kb7Oo9CkKx/OfvOkFs=";
   };
 
+  postPatch = ''
+    substituteInPlace pebble_tool/sdk/__init__.py --replace \
+      'tmp_link = "/var/tmp/pebble-sdk"' \
+      'tmp_link = os.path.join(os.environ.get("TMPDIR", "/tmp"), "pebble-sdk")'
+    substituteInPlace pebble_tool/util/__init__.py --replace \
+      'dir = os.path.expanduser("~/.pebble-sdk")' \
+      'dir = os.environ.get("PEBBLE_SDK", os.path.expanduser("~/.pebble-sdk"))'
+  '';
+
   nativeBuildInputs = [ makeWrapper ];
 
   buildInputs = [ nodejs ];
