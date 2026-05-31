@@ -156,6 +156,9 @@ pkgsCross.gccStdenv.mkDerivation (
         ln -s ${nodeEnv}/lib/node_modules $SDK_ROOT/node_modules
 
         chmod -R u+w $HOME
+
+        # Use sandbox-writable path for pebble-tool's SDK symlink
+        export PEBBLE_SDK=$TMPDIR/pebble-sdk
       ''
       + postUnpack;
 
