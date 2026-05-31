@@ -49,7 +49,6 @@
         import ./buildTools/buildPebbleApp.nix {
           inherit pkgs nixpkgs system;
           inherit (pkgs) pebble-tool;
-          python-libs = pkgs.callPackage ./derivations/pebble-tool/python-libs.nix { };
         }
       );
 

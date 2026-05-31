@@ -2,7 +2,6 @@
   pkgs,
   nixpkgs,
   pebble-tool,
-  python-libs,
   system,
 }:
 
@@ -32,17 +31,18 @@ let
   };
 
   nodeEnv = (pkgs.callPackage ./nodeEnv { }).nodeDependencies;
-  pythonEnv = pkgs.python2.withPackages (
-    ps: with python-libs; [
-      ps.freetype-py
+  pythonEnv = pkgs.python3.withPackages (
+    ps: with ps; [
+      freetype-py
       sh
       pypng
     ]
   );
 
   pebble-sdk = pkgs.fetchzip {
-    url = "https://binaries.rebble.io/sdk-core/release/sdk-core-4.3.tar.bz2";
-    sha256 = "0p6x76rq5v9rb3j2fjdz1s2553n1yf5v2yhzxxp7g5220hmsk40j";
+    url = "https://sdk.core.store/releases/4.9.169/sdk-core.tar.gz";
+    sha256 = "sha256-y6xlDdKdMgIQS2rKbJaH5GjV95U76ISZetNA0RdXL0E=";
+    stripRoot = false;
   };
 
   stringNotEmpty = str: builtins.isString str && str != "";
@@ -148,22 +148,23 @@ pkgsCross.gccStdenv.mkDerivation (
       ''
         # Setup Pebble SDK
         export HOME=`pwd`/home-dir
-        SDK_ROOT=$HOME/.pebble-sdk/SDKs/4.3
+        SDK_DIR=$HOME/.pebble-sdk/SDKs
+        SDK_ROOT=$SDK_DIR/4.9.169
         mkdir -p $SDK_ROOT/sdk-core
-        cp -r ${pebble-sdk}/* $SDK_ROOT/sdk-core
-        ln -s $SDK_ROOT $SDK_ROOT/../current
-        ln -s ${pythonEnv} $SDK_ROOT/.env
+        cp -r ${pebble-sdk}/sdk-core $SDK_ROOT/
+        ln -s $SDK_ROOT $SDK_DIR/current
+        ln -s ${pythonEnv} $SDK_ROOT/.venv
         ln -s ${nodeEnv}/lib/node_modules $SDK_ROOT/node_modules
 
         chmod -R u+w $HOME
 
-        # Use sandbox-writable path for pebble-tool's SDK symlink
-        export PEBBLE_SDK=$TMPDIR/pebble-sdk
+        # Point pebble-tool at our SDK location; tmp link uses $TMPDIR
+        export PEBBLE_SDK=$HOME/.pebble-sdk
       ''
       + postUnpack;
 
     CFLAGS =
-      "-Wno-error=builtin-macro-redefined -Wno-error=builtin-declaration-mismatch -include sys/types.h "
+      "-Wno-error=builtin-macro-redefined -Wno-error=builtin-declaration-mismatch"
       + CFLAGS;
 
     buildPhase = ''
