@@ -34,13 +34,13 @@ let
 in
 python3Packages.buildPythonPackage rec {
   pname = "pebble-tool";
-  version = "5.0.35";
+  version = "5.0.39";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "pebble-tool";
     tag = "v${version}";
-    hash = "sha256-quBDT7Sh14v7N47H1EVsvELT3Kb7Oo9CkKx/OfvOkFs=";
+    hash = "sha256-2982M6Aje38MxhlLkBnqvDFJ5nnX2Ldphjyyyd5EshU=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
