@@ -55,13 +55,13 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   name = "pebble-qemu";
-  version = "10.1.5-pebble14";
+  version = "10.1.5-pebble17";
 
   src = fetchFromGitHub {
     owner = "coredevices";
     repo = "qemu";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-WbW08UfDrPgIFmMbQF/O4kMdkDm93odg9Cs1eOtAGRo=";
+    hash = "sha256-MAasC8JZAB1obO1H2isudeK+yxc5yBZRxFFsQHGRaTo=";
     fetchSubmodules = true;
   };
 
