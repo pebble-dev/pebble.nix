@@ -27,5 +27,4 @@ final: prev: {
   pebble-tool = final.callPackage ./derivations/pebble-tool.nix { };
   pebble-toolchain-bin = final.callPackage ./derivations/pebble-toolchain-bin.nix { };
   pypkjs = final.callPackage ./derivations/pypkjs.nix { };
-  pyv8 = final.callPackage ./derivations/pyv8 { };
 }

@@ -142,22 +142,22 @@ pkgsCross.gccStdenv.mkDerivation (
       pebble-tool
       pkgs.nodejs
       pythonEnv
-    ] ++ nativeBuildInputs;
+    ]
+    ++ nativeBuildInputs;
 
-    postUnpack =
-      ''
-        # Setup Pebble SDK
-        export HOME=`pwd`/home-dir
-        SDK_ROOT=$HOME/.pebble-sdk/SDKs/4.3
-        mkdir -p $SDK_ROOT/sdk-core
-        cp -r ${pebble-sdk}/* $SDK_ROOT/sdk-core
-        ln -s $SDK_ROOT $SDK_ROOT/../current
-        ln -s ${pythonEnv} $SDK_ROOT/.env
-        ln -s ${nodeEnv}/lib/node_modules $SDK_ROOT/node_modules
+    postUnpack = ''
+      # Setup Pebble SDK
+      export HOME=`pwd`/home-dir
+      SDK_ROOT=$HOME/.pebble-sdk/SDKs/4.3
+      mkdir -p $SDK_ROOT/sdk-core
+      cp -r ${pebble-sdk}/* $SDK_ROOT/sdk-core
+      ln -s $SDK_ROOT $SDK_ROOT/../current
+      ln -s ${pythonEnv} $SDK_ROOT/.env
+      ln -s ${nodeEnv}/lib/node_modules $SDK_ROOT/node_modules
 
-        chmod -R u+w $HOME
-      ''
-      + postUnpack;
+      chmod -R u+w $HOME
+    ''
+    + postUnpack;
 
     CFLAGS =
       "-Wno-error=builtin-macro-redefined -Wno-error=builtin-declaration-mismatch -include sys/types.h "

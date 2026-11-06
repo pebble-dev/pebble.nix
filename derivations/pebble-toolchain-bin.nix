@@ -7,23 +7,23 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "pebble-toolchain-bin";
-  version = "4.33.1";
+  version = "4.44";
 
   src =
     ({
       x86_64-linux = fetchzip {
         url = "https://sdk.repebble.com/releases/${finalAttrs.version}/toolchain-linux-x86_64.tar.gz";
-        hash = "sha256-lJgmri289HETYfJkwywCdJ1V/yD8WSItLq7Apvc0j1k=";
+        hash = "sha256-DCbQ4sNJ42FMi9/WZvM9K5kdrF455rZ2DWTikBVjbSE=";
         stripRoot = false;
       };
       x86_64-darwin = fetchzip {
         url = "https://sdk.repebble.com/releases/${finalAttrs.version}/toolchain-mac-x86_64.tar.gz";
-        hash = "sha256-Vjw++ijNQTNcHd4UYgi8iudn9qG6CG3qNP+uM8xIXZM=";
+        hash = "sha256-UWL3VQnfwbq9ETw4WikJR0EH9dkegqK9BHgWGa3uqrE=";
         stripRoot = false;
       };
       aarch64-darwin = fetchzip {
         url = "https://sdk.repebble.com/releases/${finalAttrs.version}/toolchain-mac-arm64.tar.gz";
-        hash = "sha256-4KcQTJr9nrm97ZEgwbu5rxenWeizNMnI7C4tFbiQpaM=";
+        hash = "sha256-x5fupP5k8baGjdVqRlgJB1KbD0rtfcAWR/ebpHyrC7w=";
         stripRoot = false;
       };
     }).${stdenv.hostPlatform.system};

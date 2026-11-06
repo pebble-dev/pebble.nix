@@ -62,7 +62,6 @@
             pebble-tool
             pebble-toolchain-bin
             pypkjs
-            pyv8
             ;
         }
       );
