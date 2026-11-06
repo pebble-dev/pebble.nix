@@ -6,6 +6,7 @@
   python3Packages,
   pypkjs,
   zlib,
+  uv,
 }:
 
 let
@@ -79,7 +80,12 @@ python3Packages.buildPythonPackage rec {
 
   postFixup = ''
     wrapProgram $out/bin/pebble \
-      --prefix PATH : ${lib.makeBinPath [ nodejs ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          nodejs
+          uv
+        ]
+      } \
       --prefix LD_LIBRARY_PATH : ${rpath} \
       --prefix DYLD_LIBRARY_PATH : ${rpath}
   '';
